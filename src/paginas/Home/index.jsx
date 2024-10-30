@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Button, Typography, Grid2, useMediaQuery } from '@mui/material';
 import ilustracaoPrincipal from '../../assets/ilustracao-principal.svg';
 import logo1 from '../../assets/logo1.svg';
@@ -18,11 +18,82 @@ import subIcon3 from '../../assets/subIcon3.svg';
 import subIcon4 from '../../assets/subIcon4.svg';
 import pana from '../../assets/pana.svg';
 import image9 from '../../assets/image9.svg';
+import image18 from '../../assets/image18.svg';
+import image19 from '../../assets/image19.svg';
+import image20 from '../../assets/image20.svg';
 import EastIcon from '@mui/icons-material/East';
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { Carousel } from 'react-responsive-carousel';
 
 const HomePageMainSection = () => {
   const isMobile = useMediaQuery('(max-width: 768px)');
   const isTablet = useMediaQuery('(max-width: 1024px) and (min-width: 769px)');
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const cardData = [
+    { image: image18, title: 'Creating Streamlined Safeguarding Processes with OneRen', link: '#' },
+    { image: image19, title: 'What are your safeguarding responsibilities and how can you manage them?', link: '#' },
+    { image: image20, title: 'Revamping the Membership Model with Triathlon Australia', link: '#' },
+  ];
+
+
+  
+
+  const renderArrowPrev = (clickHandler, hasPrev, label) => {
+    if (!hasPrev) return null;
+    return (
+      <button
+        onClick={clickHandler}
+        style={{
+          backgroundColor: 'gray',
+          border: 'none',
+          color: 'black', // Set arrow color to black
+          fontSize: '20px',
+          cursor: 'pointer',
+          // Position the left arrow
+          position: 'absolute',
+          left: '15px', // Adjust left position as needed
+          top: '50%',
+          transform: 'translateY(-50%)',
+          zIndex: 10,
+          opacity: 0.5,
+          transition: 'opacity 0.3s ease-in-out',
+          
+        }}
+      >
+        <span aria-hidden="true">❮</span>
+      </button>
+    );
+  };
+
+  const renderArrowNext = (clickHandler, hasNext, label) => {
+    if (!hasNext) return null;
+    return (
+      <button
+        onClick={clickHandler}
+        style={{
+          backgroundColor: 'gray',
+          border: 'none',
+          color: 'black', // Set arrow color to black
+          fontSize: '20px',
+          cursor: 'pointer',
+          // Position the right arrow
+          position: 'absolute',
+          right: '15px', // Adjust right position as needed
+          top: '50%',
+          transform: 'translateY(-50%)',
+          zIndex: 10,
+          opacity: 0.5,
+          transition: 'opacity 0.3s ease-in-out',
+         
+        }}
+      >
+        <span aria-hidden="true">❯</span>
+      </button>
+    );
+  };
+  
+  
 
   return (
     <Box
@@ -382,7 +453,7 @@ const HomePageMainSection = () => {
                 description: 'Payments',
               },
             ].map(({ icon, title, description }, index) => (
-              <Grid2 item key={index} xs={6}>
+              <Grid2 key={index} xs={6}>
                 {' '}
                 {/* Cada card ocupa metade da largura */}
                 <Box
@@ -392,7 +463,7 @@ const HomePageMainSection = () => {
                     alignItems: 'center',
                     textAlign: 'center',
                     minWidth: 300,
-                    alignItems: 'flex-start',
+                    
                   }}
                 >
                   <img
@@ -613,7 +684,152 @@ const HomePageMainSection = () => {
             style={{ width: '100%', maxWidth: 400 }} // Ajuste o tamanho máximo da imagem
           />
         </Box>
+
+        
       </Box>
+      <Box sx={{ padding: '30px', backgroundColor: '#3f51b51a' }}>
+        <Typography
+          variant="h4"
+          align="center"
+          gutterBottom
+          sx={{
+            fontFamily: '"Inter", sans-serif',
+            fontWeight: 700,
+            color: '#3F51B5',
+            
+          }}
+        >
+          Caring is the new marketing
+        </Typography>
+        <Typography
+          variant="body1"
+          align="center"
+          gutterBottom
+          sx={{
+            fontFamily: '"Inter", sans-serif',
+            color: '#828282',
+            maxWidth: '500px',
+            marginLeft: '25rem'
+            
+          }}
+        >
+          The Manorath blog is the best place to read about the latest membership insights, trends and more. See what’s joining the community, read about how our members are increasing their membership income and lots more.
+        </Typography>
+
+
+        <Carousel
+          showArrows={true}
+          showStatus={false}
+          infiniteLoop={true}
+          centerMode={true}
+          centerSlidePercentage={isMobile ? 100 : isTablet ? 75 : 50} // Ajustado para tablet
+          emulateTouch={true}
+          showThumbs={false} // Melhora a responsividade
+          renderIndicator={() => null}
+          onChange={(index) => setCurrentSlide(index)}
+          selectedItem={currentSlide}
+          renderArrowPrev={renderArrowPrev} // Add custom arrow functions
+          renderArrowNext={renderArrowNext}
+        >
+          {cardData.map((item, index) => (
+            <Box
+              key={index}
+              sx={{
+                maxWidth: isMobile ? '90%' : 400, // Largura máxima para evitar que os cards fiquem muito largos
+                margin: '0 auto', // Centraliza horizontalmente
+                border: '1px solid #e0e0e0',
+                borderRadius: '8px',
+                overflow: 'hidden',
+                boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.4)',
+                transition: 'transform 0.5s ease-in-out',
+                transform: index === currentSlide ? 'scale(1.4)' : 'scale(0.9)',
+                cursor: item.link ? 'pointer' : 'default', // Cursor correto para links
+              }}
+              onClick={() => {
+                if (item.link) {
+                  window.location.href = item.link;
+                }
+              }}
+            >
+              <img src={item.image} alt={item.title} style={{ width: '100%', display: 'block' }} />
+              <Box sx={{ padding: '16px', textAlign: 'center' }}>
+                <Typography variant="h6" sx={{ fontFamily: '"Inter", sans-serif', fontWeight: 600 }}>{item.title}</Typography>
+                {item.link && (
+                  <Button
+                    href={item.link}
+                    variant="text"
+                    sx={{
+                      color: '#4CAF4F',
+                      textTransform: 'none',
+                      marginTop: '8px',
+                      '&:hover': {
+                        textDecoration: 'underline',
+                      },
+                    }}
+                  >
+                    Read more →
+                  </Button>
+                )}
+              </Box>
+            </Box>
+          ))}
+        </Carousel>
+      </Box>
+
+      <Box
+          sx={{
+            textAlign: isMobile ? 'center' : 'center',
+            flex: isMobile ? 1 : 0.6,
+            padding: '35px',
+            backgroundColor: '#F0F2F5',
+          }}
+        >
+          <Typography
+            variant="h3"
+            sx={{
+              fontFamily: '"Inter", sans-serif',
+              fontWeight: 700,
+              fontSize: isMobile ? '2rem' : '3rem',
+              
+            }}
+          >
+Pellentesque suscipit 
+          </Typography>
+          <Typography
+            variant="h3"
+            gutterBottom
+            sx={{
+              fontFamily: '"Inter", sans-serif',
+              fontWeight: 700,
+              fontSize: isMobile ? '2rem' : '3rem',
+              
+            }}
+          >
+fringilla libero eu.          </Typography>
+
+        
+          <Button
+          variant="contained"
+          sx={{
+            width: 'auto',
+            height: '65%',
+            borderRadius: '1.34px 0px 0px 0px',
+            backgroundColor: '#4CAF4F',
+            fontFamily: 'Inter',
+            fontSize: '15px',
+            lineHeight: '8.01px',
+            textTransform: 'none',
+            marginRight: '60px',
+            marginLeft: '15px',
+            '@media (max-width: 768px)': {
+              marginLeft: 'auto',
+              marginRight: '30px',
+            },
+          }}
+        >
+          Get a Demo{!isMobile && <EastIcon sx={{ marginLeft: '5px' }} />}
+        </Button>
+        </Box>
     </Box>
   );
 };
